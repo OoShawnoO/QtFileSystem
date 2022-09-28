@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/back.png</file>
+        <file>res/binary.png</file>
+        <file>res/copy.png</file>
+        <file>res/delete.png</file>
+        <file>res/dir.png</file>
+        <file>res/file.png</file>
+        <file>res/go.png</file>
+        <file>res/new.png</file>
+        <file>res/save.png</file>
+        <file>res/txt.png</file>
+        <file>res/link.png</file>
+        <file>res/unknown.png</file>
+        <file>res/Icon.png</file>
+    </qresource>
+</RCC>
