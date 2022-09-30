@@ -7,8 +7,10 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QDebug>
+#include <QMessageBox>
 #include <QAction>
 #include "filesystemitem.h"
+#include "dialog.h"
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     void PrintItems();
     void Clear();
+    void ErrorMessage();
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 

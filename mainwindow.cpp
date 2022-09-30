@@ -1,12 +1,35 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::ErrorMessage(){
+    switch(user->get_error()){
+        case NOTFOUND : {
+            QMessageBox::critical(this,"Error","File Not Found.");
+            break;
+        }
+        case NOTTEXT : {
+            QMessageBox::critical(this,"Error","Not A Text File.");
+        }
+        case NOTDIR :{
+            QMessageBox::critical(this,"Error","Not A Dir.");
+        }
+        case PERMISSION :{
+            QMessageBox::critical(this,"Error","Permission Denied.");
+        }
+        default : {
+
+        }
+    }
+    user->set_error(NO);
+}
+
 void MainWindow::Clear(){
     listWidget->disconnect();
     listWidget->clear();
 }
 
 void MainWindow::PrintItems(){
+    Clear();
     for(auto item : user->get_current_dir()->get_contents()){
         QListWidgetItem* listitem = nullptr;
         switch(item.second->get_filetype()){
@@ -48,6 +71,7 @@ void MainWindow::PrintItems(){
         switch(filesystem->get_filetype()){
             case DIR : {
                 user->cd(v);
+                ErrorMessage();
                 break;
             }
             case BINARY : {
@@ -55,7 +79,8 @@ void MainWindow::PrintItems(){
                 break;
             }
             case TEXT : {
-
+                user->vim(v);
+                ErrorMessage();
                 break;
             }
             case UNKNOWN : {
@@ -66,9 +91,10 @@ void MainWindow::PrintItems(){
                 switch(dynamic_cast<link_c*>(filesystem)->get_real()->get_filetype())
                 {
                     case DIR : {
-                        v.pop_back();
+                        v.clear();
                         v.push_back(dynamic_cast<link_c*>(filesystem)->get_real()->get_name());
                         user->cd(v);
+                        ErrorMessage();
                         break;
                     }
                     case BINARY : {
@@ -93,9 +119,6 @@ void MainWindow::PrintItems(){
                 break;
             }
         }
-
-
-        Clear();
         PrintItems();
     });
 }
@@ -115,19 +138,29 @@ MainWindow::MainWindow(QWidget *parent)
     user->set_current_dir(root);
     PrintItems();
     connect(ui->toolBar,&QToolBar::actionTriggered,[=](QAction* action){
+        vector<string> v;
         if(action->text() == "new"){
-            qDebug() << " 新建 ----------->";
-            if(listWidget->currentItem() != NULL){
-                qDebug() << listWidget->currentItem()->text();
-            }
+            Dialog dialog(this);
+            dialog.exec();
+            dialog.setAttribute(Qt::WA_DeleteOnClose);
         }else if(action->text() == "save"){
-            qDebug() << " 保存 ----------->";
+
         }else if(action->text() == "back"){
-            qDebug() << " 回退 ----------->";
+            v.push_back("..");
+            user->cd(v);
+            PrintItems();
+            v.clear();
         }else if(action->text() == "delete"){
-            qDebug() << " 删除 ----------->";
+            if(listWidget->currentItem() != NULL){
+                v.push_back(listWidget->MAP[listWidget->currentItem()]->get_name());
+                user->rm(v);
+                PrintItems();
+                v.clear();
+            }
         }else if(action->text() == "copy"){
-            qDebug() << " 复制 ----------->";
+            if(listWidget->currentItem() != NULL){
+
+            }
         }
     });
 }

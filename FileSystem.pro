@@ -12,6 +12,7 @@ SOURCES += \
     FileSystem/sources/filesystem.cpp \
     FileSystem/sources/mainfun.cpp \
     FileSystem/sources/user.cpp \
+    dialog.cpp \
     filesystemitem.cpp \
     filesystemlistwidget.cpp \
     main.cpp \
@@ -22,11 +23,13 @@ HEADERS += \
     FileSystem/headers/main.h \
     FileSystem/headers/types.h \
     FileSystem/headers/user.h \
+    dialog.h \
     filesystemitem.h \
     filesystemlistwidget.h \
     mainwindow.h
 
 FORMS += \
+    dialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

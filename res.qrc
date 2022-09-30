@@ -13,5 +13,7 @@
         <file>res/link.png</file>
         <file>res/unknown.png</file>
         <file>res/Icon.png</file>
+        <file>res/cancel.png</file>
+        <file>res/complete.png</file>
     </qresource>
 </RCC>
