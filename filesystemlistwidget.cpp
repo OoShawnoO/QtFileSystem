@@ -8,6 +8,10 @@ FileSystemListWidget::FileSystemListWidget(QWidget *parent)
 }
 
 void FileSystemListWidget::mouseDoubleClickEvent(QMouseEvent *event){
-    filesystem_c* filesystem = MAP[itemAt(event->pos())];
-    emit itemDoubleClicked(itemAt(event->pos()),filesystem);
+    QListWidgetItem* item = itemAt(event->pos());
+    if(item!=NULL){
+        filesystem_c* filesystem = MAP[item];
+        emit itemDoubleClicked(itemAt(event->pos()),filesystem);
+    }
+
 }

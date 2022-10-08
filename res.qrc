@@ -15,5 +15,6 @@
         <file>res/Icon.png</file>
         <file>res/cancel.png</file>
         <file>res/complete.png</file>
+        <file>res/paste.png</file>
     </qresource>
 </RCC>

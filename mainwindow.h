@@ -21,12 +21,15 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    void PrintItems();
-    void Clear();
-    void ErrorMessage();
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void PrintItems();
+    void Clear();
+    void ErrorMessage();
+    void InitToolBar();
+    void InitGoButton();
 private:
     Ui::MainWindow *ui;
     FileSystemListWidget* listWidget;

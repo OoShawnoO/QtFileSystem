@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 void MainWindow::ErrorMessage(){
     switch(user->get_error()){
         case NOTFOUND : {
@@ -30,6 +29,7 @@ void MainWindow::Clear(){
 
 void MainWindow::PrintItems(){
     Clear();
+    ui->goline->setText(user->get_current_dir()->get_name().c_str());
     for(auto item : user->get_current_dir()->get_contents()){
         QListWidgetItem* listitem = nullptr;
         switch(item.second->get_filetype()){
@@ -123,28 +123,17 @@ void MainWindow::PrintItems(){
     });
 }
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    setWindowIcon(QIcon(":/res/Icon.png"));
-    listWidget = ui->listWidget;
-    dir_c* D = new dir_c(user,"123",dynamic_cast<filesystem_c*>(root));
-    file_c* F1 = new file_c(user,"文件1.txt",dynamic_cast<filesystem_c*>(root));
-    link_c* L = new link_c(user,"链接1",dynamic_cast<filesystem_c*>(root));
-    file_c* F2 = new file_c(user,"文件2",dynamic_cast<filesystem_c*>(root));
-    L->set_real(D);
-    user->set_current_dir(root);
-    PrintItems();
+void MainWindow::InitToolBar(){
     connect(ui->toolBar,&QToolBar::actionTriggered,[=](QAction* action){
         vector<string> v;
         if(action->text() == "new"){
             Dialog dialog(this);
             dialog.exec();
             dialog.setAttribute(Qt::WA_DeleteOnClose);
-        }else if(action->text() == "save"){
-
+        }else if(action->text() == "paste"){
+            v.push_back(user->get_current_dir()->get_name().c_str());
+            user->paste(v);
+            PrintItems();
         }else if(action->text() == "back"){
             v.push_back("..");
             user->cd(v);
@@ -159,10 +148,49 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }else if(action->text() == "copy"){
             if(listWidget->currentItem() != NULL){
-
+                v.push_back(listWidget->MAP[listWidget->currentItem()]->get_name());
+                user->cp(v);
+                PrintItems();
             }
         }
     });
+}
+
+void MainWindow::InitGoButton(){
+    connect(ui->go,&QPushButton::pressed,[=](){
+        string s = (const char*)((ui->goline->text()).toLocal8Bit());
+        qDebug() << s.c_str();
+        vector<string> v;
+        v.push_back(s);
+        user->cd(v);
+        PrintItems();
+        ErrorMessage();
+    });
+}
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    setWindowIcon(QIcon(":/res/Icon.png"));
+    listWidget = ui->listWidget;
+
+    dir_c* D = new dir_c(user,"123",dynamic_cast<filesystem_c*>(root));
+    file_c* F1 = new file_c(user,"文件1.txt",dynamic_cast<filesystem_c*>(root));
+    link_c* L = new link_c(user,"链接1",dynamic_cast<filesystem_c*>(root));
+    file_c* F2 = new file_c(user,"文件2",dynamic_cast<filesystem_c*>(root));
+    L->set_real(D);
+
+    user->set_current_dir(root);
+
+    ui->goline->setText(user->get_current_dir()->get_name().c_str());
+
+    PrintItems();
+
+    InitToolBar();
+
+    InitGoButton();
 }
 
 MainWindow::~MainWindow()

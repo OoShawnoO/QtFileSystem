@@ -65,7 +65,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout" stretch="30,1">
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="goline">
             <property name="font">
              <font>
               <family>Consolas</family>
@@ -79,7 +79,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="go">
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
@@ -215,7 +215,7 @@
    <addaction name="separator"/>
    <addaction name="copy"/>
    <addaction name="separator"/>
-   <addaction name="save"/>
+   <addaction name="paste"/>
    <addaction name="separator"/>
    <addaction name="deletefile"/>
    <addaction name="separator"/>
@@ -229,13 +229,13 @@
     <string>new</string>
    </property>
   </action>
-  <action name="save">
+  <action name="paste">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/res/save.png</normaloff>:/res/save.png</iconset>
+     <normaloff>:/res/paste.png</normaloff>:/res/paste.png</iconset>
    </property>
    <property name="text">
-    <string>save</string>
+    <string>paste</string>
    </property>
   </action>
   <action name="back">
