@@ -28,6 +28,7 @@ void MainWindow::ErrorMessage(){
 void MainWindow::Clear(){
     listWidget->disconnect();
     listWidget->clear();
+    listWidget->MAP.clear();
 }
 
 void MainWindow::PrintItems(){

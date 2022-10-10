@@ -68,6 +68,7 @@
                 <property name="font">
                  <font>
                   <family>agave Nerd Font Mono</family>
+                  <pointsize>14</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -163,6 +164,18 @@
            <widget class="QLineEdit" name="linkobject">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>agave Nerd Font Mono</family>
+              <pointsize>16</pointsize>
+             </font>
             </property>
            </widget>
           </item>
