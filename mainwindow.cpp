@@ -15,6 +15,9 @@ void MainWindow::ErrorMessage(){
         case PERMISSION :{
             QMessageBox::critical(this,"Error","Permission Denied.");
         }
+        case NOTEXECABLE :{
+            QMessageBox::critical(this,"Error","Not Executable File.");
+        }
         default : {
 
         }
@@ -65,7 +68,6 @@ void MainWindow::PrintItems(){
         }
     }
     connect(listWidget,&FileSystemListWidget::itemDoubleClicked,[=](QListWidgetItem* item,filesystem_c* filesystem){
-        qDebug() << filesystem->get_name().c_str();
         vector<string> v;
         v.push_back(filesystem->get_name());
         switch(filesystem->get_filetype()){
@@ -75,7 +77,8 @@ void MainWindow::PrintItems(){
                 break;
             }
             case BINARY : {
-
+                user->set_error(NOTEXECABLE);
+                ErrorMessage();
                 break;
             }
             case TEXT : {
@@ -84,35 +87,39 @@ void MainWindow::PrintItems(){
                 break;
             }
             case UNKNOWN : {
-
+                user->set_error(NOTEXECABLE);
+                ErrorMessage();
                 break;
             }
             case LINK : {
+                v.clear();
+                v = user->get_pos(dynamic_cast<link_c*>(filesystem)->get_real());
+                v[0] = v[0] + dynamic_cast<link_c*>(filesystem)->get_real()->get_name();
+                qDebug() << v.size();
                 switch(dynamic_cast<link_c*>(filesystem)->get_real()->get_filetype())
                 {
                     case DIR : {
-                        v.clear();
-                        v.push_back(dynamic_cast<link_c*>(filesystem)->get_real()->get_name());
                         user->cd(v);
                         ErrorMessage();
                         break;
                     }
                     case BINARY : {
-
+                        user->set_error(NOTEXECABLE);
                         break;
                     }
                     case TEXT : {
-
+                        user->vim(v);
                         break;
                     }
                     case UNKNOWN : {
-
+                        user->set_error(NOTEXECABLE);
                         break;
                     }
                     default : {
                         break;
                     }
                 }
+                ErrorMessage();
                 break;
             }
             default : {
@@ -130,10 +137,13 @@ void MainWindow::InitToolBar(){
             Dialog dialog(this);
             dialog.exec();
             dialog.setAttribute(Qt::WA_DeleteOnClose);
+            ErrorMessage();
+            PrintItems();
         }else if(action->text() == "paste"){
-            v.push_back(user->get_current_dir()->get_name().c_str());
+            v.push_back("");
             user->paste(v);
             PrintItems();
+            v.clear();
         }else if(action->text() == "back"){
             v.push_back("..");
             user->cd(v);
@@ -151,6 +161,7 @@ void MainWindow::InitToolBar(){
                 v.push_back(listWidget->MAP[listWidget->currentItem()]->get_name());
                 user->cp(v);
                 PrintItems();
+                v.clear();
             }
         }
     });
@@ -159,7 +170,6 @@ void MainWindow::InitToolBar(){
 void MainWindow::InitGoButton(){
     connect(ui->go,&QPushButton::pressed,[=](){
         string s = (const char*)((ui->goline->text()).toLocal8Bit());
-        qDebug() << s.c_str();
         vector<string> v;
         v.push_back(s);
         user->cd(v);

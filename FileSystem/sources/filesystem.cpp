@@ -108,15 +108,14 @@ void filesystem_c::set_update_time(tm *newupdatetime) { *update_time = *newupdat
 void filesystem_c::set_visit_time(tm *newvisittime) { *visit_time = *newvisittime; }
 void filesystem_c::set_parent(filesystem_c *_parent,bool flag)
 {
-        if (parent != NULL && flag == true)
+        if (parent != nullptr && flag == true)
         {
-                cout << "parent set--" <<endl;
                 (dynamic_cast<dir_c*>(parent))->get_contents().erase(this->get_name());
                 parent->set_update_time(get_time());
                 parent = _parent;
                 (dynamic_cast<dir_c*>(parent))->get_contents()[get_name()] = this;
         }
-        else if(parent != NULL && flag == false)
+        else if(_parent  && flag == false)
         {     
                 parent = _parent;
                 (dynamic_cast<dir_c*>(parent))->get_contents()[get_name()] = this;
