@@ -665,9 +665,13 @@ bool user_c::vim(vector<string>& args){
             }
             out.close();
             #ifdef __unix__
-            system((string("vim ")+name).c_str());
+                #ifdef __Qt__
+                system((string("gedit ")+name).c_str());
+                #else
+                system((string("vim ")+name).c_str());
+                #endif
             #elif _WIN32
-            system((string("notepad ")+name).c_str());
+            system((string("start notepad ")+name).c_str());
             #endif
             v.clear();
             ifstream in(name);
@@ -818,6 +822,7 @@ vector<string> user_c::get_pos(filesystem_c* filesystem){
     {
         vs.push_back(*it);
     }
+    vs.push_back(filesystem->get_name());
     return vs;
 }
 #endif
