@@ -143,6 +143,23 @@ void user_c::set_read_cursor(int cursor) { read_cursor = cursor; }
 extern dir_c *root;
 extern user_c *user;
 
+vector<string> user_c::getPwd()
+{
+    auto dir = dynamic_cast<filesystem_c*>(current_dir);
+    if (dynamic_cast<dir_c*>(dir) == root)
+    {
+        return vector<string>{"/"};
+    }
+    vector<string> v;
+    while (dir->get_name() != "/")
+    {
+        v.push_back(dir->get_name());
+        dir = dynamic_cast<filesystem_c*>(dir)->parent;
+        v.push_back("/");
+    }
+    return v;
+}
+
 //（1）pwd - 显示当前目录的绝对路径
 bool user_c::pwd(vector<string> &)
 {
@@ -665,11 +682,11 @@ bool user_c::vim(vector<string>& args){
             }
             out.close();
             #ifdef __unix__
-                #ifdef __Qt__
-                system((string("gedit ")+name).c_str());
-                #else
-                system((string("vim ")+name).c_str());
-                #endif
+            #ifdef __Qt__
+            system((string("gedit ")+name).c_str());
+            #else
+            system((string("vim ")+name).c_str());
+            #endif
             #elif _WIN32
             system((string("start notepad ")+name).c_str());
             #endif

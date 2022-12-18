@@ -28,17 +28,20 @@ Dialog::Dialog(QWidget *parent) :
                                            dynamic_cast<filesystem_c*>(user->get_current_dir()),
                                            63u,63u,state);
                  file->set_filetype(TEXT);
+                 break;
              }
              case 1:{
                  file_c* file = new file_c(user,string(ui->filename->text().toUtf8()),
                                            dynamic_cast<filesystem_c*>(user->get_current_dir()),
                                            63u,63u,state);
                  file->set_filetype(BINARY);
+                 break;
              }
              case 2:{
                  dir_c* dir = new dir_c(user,string(ui->filename->text().toUtf8()),
                                         dynamic_cast<filesystem_c*>(user->get_current_dir()),
                                         63u,63u,state);
+                 break;
              }
              case 3:{
                  string str(ui->linkobject->text().toUtf8());
@@ -55,9 +58,10 @@ Dialog::Dialog(QWidget *parent) :
                             user->set_error(NOTFOUND);
                         }
                  });
+                 break;
              }
-             this->close();
          }
+         this->close();
     });
 }
 

@@ -45,6 +45,7 @@ public:
     void set_current_dir(dir_c *);
     void set_read_cursor(int);
 
+    vector<string> getPwd();
     //（1）pwd - 显示当前目录的绝对路径
     bool pwd(vector<string> &);
     //（2）ls - 显示当前路径下的文件和目录

@@ -33,9 +33,17 @@ void MainWindow::Clear(){
 
 void MainWindow::PrintItems(){
     Clear();
-    ui->goline->setText(user->get_current_dir()->get_name().c_str());
+//    ui->goline->setText(user->get_current_dir()->get_name().c_str());
+    string x;
+    vector<string> v = user->getPwd();
+    for(vector<string>::reverse_iterator it = v.rbegin();it != v.rend();it++)
+    {
+        x = x + *it;
+    }
+    ui->goline->setText(x.c_str());
     for(auto item : user->get_current_dir()->get_contents()){
-        QListWidgetItem* listitem = nullptr;
+        if(item.first == "." || item.first == "..") continue;
+        QListWidgetItem* listitem;
         switch(item.second->get_filetype()){
             case DIR : {
                 listitem = new QListWidgetItem(QIcon(":/res/dir.png"),item.first.c_str());
@@ -132,6 +140,7 @@ void MainWindow::PrintItems(){
 }
 
 void MainWindow::InitToolBar(){
+    connect(ui->listWidget,&FileSystemListWidget::print,this,&MainWindow::PrintItems);
     connect(ui->toolBar,&QToolBar::actionTriggered,[=](QAction* action){
         vector<string> v;
         if(action->text() == "new"){

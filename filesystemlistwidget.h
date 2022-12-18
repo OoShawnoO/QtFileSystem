@@ -19,11 +19,12 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dropEvent(QDropEvent *event);
+//    void dragEnterEvent(QDragEnterEvent *event);
+//    void dragMoveEvent(QDragMoveEvent *event);
+//    void dropEvent(QDropEvent *event);
 Q_SIGNALS:
     void itemDoubleClicked(QListWidgetItem*,filesystem_c*);
+    void print();
 };
 
 #endif // FILESYSTEMLISTWIDGET_H
